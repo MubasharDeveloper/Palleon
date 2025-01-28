@@ -73,13 +73,17 @@
   </div>
   <!-- TOOLBAR END -->
   <!-- BROWSER -->
-  <div id="browser" class="scrollingPanel">
+
+  
+
+
+  <div id="browser" class="scrollingPanel browser-position-cover">
     <div id="browser-container">
       <!-- OBJECT SETTINGS -->
       <div id="object-settings">
         <div class="tool-content">
           <p class="property-title">Settings</p>
-          <span class="collapse material-icons">
+          <span class="collapse material-icons d-none">
             keyboard_double_arrow_left
           </span>
           <div id="properties">
@@ -97,7 +101,7 @@
       <div id="project-tool" class="d-none">
         <div class="tool-content">
           <p class="property-title">Templates</p>
-          <span class="collapse material-icons">
+          <span class="collapse material-icons d-none">
             keyboard_double_arrow_left
           </span>
           <div class="nav-tab-wrap">
@@ -252,40 +256,39 @@
 
             <style>
               .category {
-  margin: 10px 0;
-}
+                margin: 10px 0;
+              }
 
-.toggle-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
+              .toggle-btn {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                font-size: 16px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+              }
 
-.arrow {
-  margin-left: 10px;
-  font-size: 16px;
-  transition: transform 0.2s;
-}
+              .arrow {
+                margin-left: 10px;
+                font-size: 16px;
+                transition: transform 0.2s;
+              }
 
-.template-container {
-  display: none;
-  margin-top: 10px;
-}
+              .template-container {
+                display: none;
+                margin-top: 10px;
+              }
 
-.template-container.show {
-  display: grid;
-}
+              .template-container.show {
+                display: grid;
+              }
 
             </style>
-
-
+            
             <div id="my-templates" class="nav-tab-content d-none">
               <div class="project-menu-btns">
                 <button type="button" id="import-project" class="btn">Import</button>
@@ -301,7 +304,7 @@
       <div id="upload-tool" class="d-none">
         <div class="tool-content">
           <p class="property-title">Uploads</p>
-          <span class="collapse material-icons">
+          <span class="collapse material-icons d-none">
             keyboard_double_arrow_left
           </span>
           <div class="assets-buttons">
@@ -333,7 +336,7 @@
       <div id="text-tool" class="d-none">
         <div class="tool-content">
           <p class="property-title">Text</p>
-          <span class="collapse material-icons">
+          <span class="collapse material-icons d-none">
             keyboard_double_arrow_left
           </span>
           <div class="shapes-cont">
@@ -442,7 +445,7 @@
       <div id="shape-tool" class="d-none">
         <div class="tool-content">
           <p class="property-title">Objects</p>
-          <span class="collapse material-icons">
+          <span class="collapse material-icons d-none">
             keyboard_double_arrow_left
           </span>
           <div class="shapes-cont">
@@ -576,7 +579,7 @@
       <div id="image-tool" class="d-none">
         <div class="tool-content">
           <p class="property-title">Images</p>
-          <span class="collapse material-icons">
+          <span class="collapse material-icons d-none">
             keyboard_double_arrow_left
           </span>
           <div class="nav-tabs-wrap">
@@ -696,7 +699,7 @@
       <div id="video-tool" class="d-none">
         <div class="tool-content">
           <p class="property-title">Videos</p>
-          <span class="collapse material-icons">
+          <span class="collapse material-icons d-none">
             keyboard_double_arrow_left
           </span>
           <div class="nav-tabs-wrap">
@@ -805,7 +808,7 @@
             <span class="material-icons">file_upload</span>
             Upload audio
           </button>
-          <span class="collapse material-icons">
+          <span class="collapse material-icons d-none">
             keyboard_double_arrow_left
           </span>
           <div id="audio-list-parent">
@@ -884,7 +887,7 @@
       <div id="qrcode-tool" class="d-none">
         <div class="tool-content">
           <p class="property-title">QR CODE</p>
-          <span class="collapse material-icons">
+          <span class="collapse material-icons d-none">
             keyboard_double_arrow_left
           </span>
           <div id="qrcode-settings">
@@ -966,6 +969,8 @@
       </div>
     </div>
   </div>
+
+
   <!-- BROWSER END -->
   <!-- CANVAS AREA -->
   <div id="canvas-area">
@@ -1050,9 +1055,9 @@
   </div>
   <!-- CANVAS AREA END -->
   <!-- Timeline Handle -->
-  <div id="timeline-handle"></div>
+  <div id="timeline-handle" class="d-none"></div>
   <!-- BOTTOM AREA -->
-  <div id="bottom-area" class="noselect">
+  <div id="bottom-area" class="noselect layer-custom-class d-none">
     <div id="keyframe-properties">
       <div id="easing">
         <p class="property-title">Keyframe easing</p>
@@ -1079,7 +1084,7 @@
       </div>
     </div>
     <div id="nothing"></div>
-    <div id="layer-list">
+    <div id="layer-list" >
       <div id="layerhead"><span class="material-icons">layers</span>LAYERS</div>
       <div id="layer-inner-list" class="nolayers">
         <div id="nolayers">
@@ -1105,8 +1110,8 @@
   </div>
   <!-- BOTTOM AREA END -->
   <!-- TIMELINE CONTROLS -->
-  <div id="controls" class="noselect">
-    <div id="timeline-wrap">
+  <div id="controls" class="noselect ">
+    <div id="timeline-wrap"  class="d-none">
       <span class="material-icons timeline-icon">view_timeline</span>
       <input id="timeline-zoom" type="range" min="5" max="47" value="47" step="1" class="rangeslider" autocomplete="off">
       <div id="speed">
@@ -1141,12 +1146,12 @@
       </div>
       <span id="skip-backward" class="material-icons">skip_previous</span>
       <span id="play-button" class="material-icons">play_arrow</span>
-      <span id="skip-forward" class="material-icons">skip_next</span>
+      <span id="skip-forward" class="material-icons d-none" >skip_next</span>
       <div id="total-time">
         <input autocomplete="off" value="00:00:00" readonly>
       </div>
     </div>
-    <div id="controls-right">
+    <div id="controls-right" class="d-none">
       <button type="button" id="download" class="btn primary">
         <span class="material-icons">download</span>
         Download

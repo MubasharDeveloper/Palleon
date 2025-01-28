@@ -897,7 +897,7 @@ ul.dropdown li a .material-icons {
   left: 76px;
   top: 0;
   box-sizing: border-box;
-  z-index: 999999;
+  z-index: 999999999;
   display: block;
   overflow-x: auto;
 }
@@ -3907,6 +3907,13 @@ label.download-options-label {
     width: calc(100% - 255px);
   }
 
+  #canvas-properties .canvas-properties-title-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
   .control-wrap {
     flex-direction: column;
   }
@@ -4076,15 +4083,17 @@ label.download-options-label {
   }
 
   #browser {
-    height: calc(100% - 272px) !important;
+    height: 168px;
     left: 0;
+    bottom: 103px;
+    width: 100%;
 
   }
 
   #canvas-area {
     height: calc(100% - 272px) ;
-    width: calc(100% - 199px) ;
-    left: 199px ;
+    width: 100% ;
+    left: 0px ;
   }
   .canvas-full {
     left: 0 !important;
@@ -4112,4 +4121,22 @@ label.download-options-label {
     height: 6px;
     top: 34px;
   }
+
+  .browser-position-cover{
+    position: absolute;
+  }
+  
+  
+  
+  #controls{
+    display: flex;
+    justify-content: center;
+  }
+  #browser {
+   
+    top: unset;
+    border-top: 1px solid #757575;
+  }
 }
+
+
