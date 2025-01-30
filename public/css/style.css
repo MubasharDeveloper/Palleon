@@ -838,7 +838,7 @@ ul.dropdown li a .material-icons {
   transition: all 0.2s ease-in-out;
   display: flex;
   flex-direction: column;
-  padding: 10px 0;
+  padding: 10px 10px;
 }
 
 .tool p {
@@ -2301,8 +2301,8 @@ canvas {
 
 #layer-list {
   position: absolute;
-  height: 145px;
-  width: 299px;
+  height: 128px;
+  width: 100%;
   left: 76px;
   bottom: 60px;
   background-color: var(--color-1);
@@ -3982,13 +3982,13 @@ label.download-options-label {
   }
 
   #layer-list {
-    width: 199px;
+    /* width: 199px; */
     left: 56px;
     bottom: 60px;
   }
 
   #layerhead {
-    width: 199px;
+    width: 100%;
   }
 
   #timearea {
@@ -4066,7 +4066,7 @@ label.download-options-label {
 
     #tool-wrap {
       display: flex;
-      gap: 25px;
+      gap: 10px;
       padding: 0 15px;
       margin-top: 0 !important;
       overflow-x: scroll;
@@ -4102,7 +4102,7 @@ label.download-options-label {
   #bottom-area {
     #layer-list {
       left: 0px;
-      bottom: 86px;
+      bottom: 102px;
     }
 
     #timearea {

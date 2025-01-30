@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <!-- HEAD -->
+
 <head>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    var getTheme = localStorage.getItem("theme");
+    if (getTheme) {
+        var themeCss = document.getElementById("theme-css");
+        themeCss.setAttribute("href", "css/" + getTheme + ".css");
+        
+        var themeSwitcher = document.getElementById("theme-switcher");
+        themeSwitcher.innerHTML = getTheme === "light" 
+            ? '<span class="material-icons">nightlight</span>' 
+            : '<span class="material-icons">wb_sunny</span>';
+
+            themeSwitcher.classList = getTheme;
+    }
+});
+
+  </script>
   <title>Palleon Motion - Animated GIF and Video Maker</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -12,7 +31,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="{{asset('css/plugins.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/style.css')}}">
-  <link id="theme-css" href="{{asset('css/dark.css')}}" rel="stylesheet" type="text/css">
+  <link id="theme-css" href="{{asset('css/light.css')}}" rel="stylesheet" type="text/css">
   <!-- <link id="theme-css" href="css/light.css" rel="stylesheet" type="text/css"> -->
 </head>
 <!-- HEAD END -->
@@ -36,6 +55,10 @@
       <div id="object-settings-select" class="tool tool-active" data-id="object-settings">
         <span class="material-icons">tune</span>
         <p>Settings</p>
+      </div>
+      <div id="layer-select" class="tool" data-id="layer-panel">
+        <span class="material-icons">layers</span>
+        <p>Layers</p>
       </div>
       <div id="project-tool-select" class="tool" data-id="project-tool">
         <span class="material-icons">perm_media</span>
@@ -991,8 +1014,9 @@
     </div>
     <!-- TOP CANVAS MENU -->
     <div id="top-canvas-menu">
-      <div id="theme-switcher" class="dark">
-        <span class="material-icons">wb_sunny</span>
+      <div id="theme-switcher" class="light">
+        <!-- <span class="material-icons">wb_sunny</span> -->
+        <span class="material-icons">nightlight</span>
       </div>
       <div id="user-menu" class="user-menu">
         <div class="dropdown-wrap">
@@ -1168,6 +1192,10 @@
       <div id="object-settings-select" class="tool tool-active" data-id="object-settings">
         <span class="material-icons">tune</span>
         <p>Settings</p>
+      </div>
+      <div id="layer-select" class="tool" data-id="layer-panel">
+        <span class="material-icons">layers</span>
+        <p>Layers</p>
       </div>
       <div id="project-tool-select" class="tool" data-id="project-tool">
         <span class="material-icons">perm_media</span>
