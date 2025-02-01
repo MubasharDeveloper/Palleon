@@ -2588,7 +2588,7 @@ canvas {
   overflow-y: hidden;
   position: fixed;
   border-bottom: 1px solid var(--color-4);
-  border-top: 1px solid var(--color-4);
+  /* border-top: 1px solid var(--color-4); */
   margin-top: -42px;
   box-sizing: border-box;
   pointer-events: none;
@@ -4139,4 +4139,13 @@ label.download-options-label {
   }
 }
 
+
+.canvas-properties-title-div{
+  display: flex  ;
+      justify-content: space-between;
+      align-items: center;
+      & p{
+        margin: 0;
+      }
+}
 

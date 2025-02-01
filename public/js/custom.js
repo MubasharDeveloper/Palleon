@@ -84,7 +84,7 @@
             }
         });
     });
-
+  
 })(jQuery);
 
 
@@ -92,10 +92,10 @@
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const browser = document.getElementById("browser");
-    browser.classList.add("collapsed");
-  });
+// document.addEventListener("DOMContentLoaded", function () {
+//     const browser = document.getElementById("browser");
+//     browser.classList.add("collapsed");
+//   });
 
   document.addEventListener("DOMContentLoaded", function () {
     var canvas = document.getElementById("canvas");
@@ -112,18 +112,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+const layerSelect = document.getElementById("layer-select");
+layerSelect.addEventListener("click", function () {
+    document.querySelector('#browser').style.display = 'none';
+  document.querySelector('#bottom-area').style.display = 'block';
+
+});
 
 
+let materialIconMain = document.querySelectorAll('.material-icon-main');
 
-
-
-
-
-
-
-
-
-
+materialIconMain.forEach(icon => {
+    icon.addEventListener('click', function(e) {
+  document.querySelector('#bottom-area').style.display = 'none';
+  document.querySelector('#browser').style.display = 'block';
+    });
+});
 
 
 

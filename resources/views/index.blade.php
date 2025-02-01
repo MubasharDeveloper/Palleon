@@ -45,7 +45,7 @@
   </div>
   <!-- Page Loader END -->
   <!-- TOOLBAR -->
-  <div id="toolbar" class="noselect toolbar-for-web">
+  <!-- <div id="toolbar" class="noselect toolbar-for-web">
     <div id="logo">
       <a href="#">
         <img src="{{asset('assets/logo.png')}}" alt="Palleon Motion">
@@ -93,7 +93,7 @@
         <p>QR CODE</p>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- TOOLBAR END -->
   <!-- BROWSER -->
 
@@ -1081,7 +1081,7 @@
   <!-- Timeline Handle -->
   <div id="timeline-handle" class="d-none"></div>
   <!-- BOTTOM AREA -->
-  <div id="bottom-area" class="noselect layer-custom-class d-none">
+  <div id="bottom-area" class="noselect layer-custom-class">
     <div id="keyframe-properties">
       <div id="easing">
         <p class="property-title">Keyframe easing</p>
@@ -1189,7 +1189,7 @@
       </a>
     </div>
     <div id="tool-wrap">
-      <div id="object-settings-select" class="tool tool-active" data-id="object-settings">
+      <div id="object-settings-select" class="tool tool-active material-icon-main" data-id="object-settings">
         <span class="material-icons">tune</span>
         <p>Settings</p>
       </div>
@@ -1197,35 +1197,35 @@
         <span class="material-icons">layers</span>
         <p>Layers</p>
       </div>
-      <div id="project-tool-select" class="tool" data-id="project-tool">
+      <div id="project-tool-select" class="tool material-icon-main" data-id="project-tool">
         <span class="material-icons">perm_media</span>
         <p>Templates</p>
       </div>
-      <div id="upload-tool-select" class="tool" data-id="upload-tool">
+      <div id="upload-tool-select" class="tool material-icon-main" data-id="upload-tool">
         <span class="material-icons">cloud_upload</span>
         <p>Uploads</p>
       </div>
-      <div id="text-tool-select" class="tool" data-id="text-tool">
+      <div id="text-tool-select" class="tool material-icon-main" data-id="text-tool">
         <span class="material-icons">title</span>
         <p>Text</p>
       </div>
-      <div id="shape-tool-select" class="tool" data-id="shape-tool">
+      <div id="shape-tool-select" class="tool material-icon-main" data-id="shape-tool">
         <span class="material-icons">interests</span>
         <p>Objects</p>
       </div>
-      <div id="image-tool-select" class="tool" data-id="image-tool">
+      <div id="image-tool-select" class="tool material-icon-main" data-id="image-tool">
         <span class="material-icons">add_photo_alternate</span>
         <p>Images</p>
       </div>
-      <div id="video-tool-select" class="tool" data-id="video-tool">
+      <div id="video-tool-select" class="tool material-icon-main" data-id="video-tool">
         <span class="material-icons">videocam</span>
         <p>Videos</p>
       </div>
-      <div id="audio-tool-select" class="tool" data-id="audio-tool">
+      <div id="audio-tool-select" class="tool material-icon-main" data-id="audio-tool">
         <span class="material-icons">queue_music</span>
         <p>Audio</p>
       </div>
-      <div id="qrcode-tool-select" class="tool" data-id="qrcode-tool">
+      <div id="qrcode-tool-select" class="tool material-icon-main" data-id="qrcode-tool">
         <span class="material-icons">qr_code</span>
         <p>QR CODE</p>
       </div>
