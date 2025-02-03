@@ -1018,7 +1018,7 @@
         <!-- <span class="material-icons">wb_sunny</span> -->
         <span class="material-icons">nightlight</span>
       </div>
-      <div id="user-menu" class="user-menu">
+      <!-- <div id="user-menu" class="user-menu">
         <div class="dropdown-wrap">
             <img alt="avatar" src='assets/avatar.png' /><span class="material-icons">arrow_drop_down</span>
             <div class="menu-menu-container">
@@ -1030,7 +1030,7 @@
                 </ul>
             </div>
         </div>
-    </div>
+      </div> -->
     </div>
     <!-- BOTTOM CANVAS -->
     <div id="bottom-canvas">
@@ -1175,7 +1175,7 @@
         <input autocomplete="off" value="00:00:00" readonly>
       </div>
     </div>
-    <div id="controls-right" class="d-none">
+    <div id="controls-right" class="">
       <button type="button" id="download" class="btn primary">
         <span class="material-icons">download</span>
         Download
