@@ -4137,6 +4137,11 @@ label.download-options-label {
     top: unset;
     border-top: 1px solid #757575;
   }
+  .replay-btn{
+    border: 1px solid gray;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
 }
 
 

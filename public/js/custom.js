@@ -85,10 +85,25 @@
         });
     });
   
+//    let canvasCrossIcon = document.getElementById('hamid-cross-icon');
+//    canvasCrossIcon.addEventListener('click', function() {
+//     alert('hamid');
+//    })
+
+// $('hamid-cross-icon').on('click', ()=>{
+//     alert('hamid');
+// })
+
 })(jQuery);
 
 
-
+// function hamidCloseCanvas(){
+//     let canvasCrossArea = document.getElementById('canvas-properties');
+//     let toShow = document.getElementById('back-properties');
+//     canvasCrossArea.style.display = 'none';
+//     toShow.style.display = 'block';
+    
+//    }
 
 
 

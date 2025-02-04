@@ -1168,7 +1168,7 @@
       <div id="current-time">
         <input autocomplete="off" value="00:00:00" readonly>
       </div>
-      <span id="skip-backward" class="material-icons">skip_previous</span>
+      <span id="skip-backward" class="replay-btn">Replay</span>
       <span id="play-button" class="material-icons">play_arrow</span>
       <span id="skip-forward" class="material-icons d-none" >skip_next</span>
       <div id="total-time">
