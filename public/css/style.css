@@ -4154,3 +4154,13 @@ label.download-options-label {
       }
 }
 
+#backgroundRemovalModal{
+  z-index: 9999999999;
+}
+.after-before-main-wrapper{
+  display: flex;
+}
+.btns-main-wrapper{
+  display: flex;
+  justify-content: space-between;
+}

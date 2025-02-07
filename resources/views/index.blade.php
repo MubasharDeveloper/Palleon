@@ -1252,15 +1252,18 @@
                   <label for="image" class="form-label">Choose Image</label>
                   <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 " id="before-remove">
                     <img id="imagePreview" src="" alt="Original Preview" style="max-width: 100%; display: none;">
                 </div>
                 <div class="mb-3" id="processedImageContainer" style="display: none;">
-                    <h5>Processed Image:</h5>
+                    <!-- <h5>Processed Image:</h5> -->
                     <img id="processedImage" src="" alt="Processed Preview" style="max-width: 100%;">
-                    <a id="downloadButton" class="btn btn-success" href="" download style="display: none;">Download Processed Image</a>
+                    
                 </div>
-                <button type="submit" class="btn btn-primary">Remove Background</button>
+               <div class="btns-main-wrapper" id="bg-remove-btn">
+               <button type="submit" class="btn btn-primary" >Remove Background</button>
+               <a id="downloadButton" class="btn btn-success" href="" download style="display: none;">Download Processed Image</a>
+               </div>
               </form>
             </div>
           </div>
