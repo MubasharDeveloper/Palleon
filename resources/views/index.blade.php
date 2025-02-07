@@ -28,10 +28,12 @@
   <meta name="description" content="Create animated videos with Pmotion, a motion graphics editor with keyframing, filters, text animations, and more...">
   <link rel="shortcut icon" href="{{asset('assets/favicon.ico')}}" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="{{asset('css/plugins.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/style.css')}}">
   <link id="theme-css" href="{{asset('css/light.css')}}" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <!-- <link id="theme-css" href="css/light.css" rel="stylesheet" type="text/css"> -->
 </head>
 <!-- HEAD END -->
@@ -1209,6 +1211,10 @@
         <span class="material-icons">title</span>
         <p>Text</p>
       </div>
+      <div id="background-remover-tool-select" class="tool material-icon-main" data-id="background-remover-tool">
+        <span class="material-icons">remove_circle</span>
+        <p>Background Remover</p>
+      </div>
       <div id="shape-tool-select" class="tool material-icon-main" data-id="shape-tool">
         <span class="material-icons">interests</span>
         <p>Objects</p>
@@ -1231,6 +1237,84 @@
       </div>
     </div>
   </div>
+  <!-- Background Removal Modal -->
+  <div class="modal fade" id="backgroundRemovalModal" tabindex="-1" aria-labelledby="backgroundRemovalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="backgroundRemovalModalLabel">Remove Background</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="backgroundRemovalForm" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-3">
+                  <label for="image" class="form-label">Choose Image</label>
+                  <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                </div>
+                <div class="mb-3">
+                    <img id="imagePreview" src="" alt="Original Preview" style="max-width: 100%; display: none;">
+                </div>
+                <div class="mb-3" id="processedImageContainer" style="display: none;">
+                    <h5>Processed Image:</h5>
+                    <img id="processedImage" src="" alt="Processed Preview" style="max-width: 100%;">
+                    <a id="downloadButton" class="btn btn-success" href="" download style="display: none;">Download Processed Image</a>
+                </div>
+                <button type="submit" class="btn btn-primary">Remove Background</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+<!-- Add this before closing body tag -->
+<script>
+document.querySelector('#background-remover-tool-select').addEventListener('click', function() {
+    var modal = new bootstrap.Modal(document.getElementById('backgroundRemovalModal'));
+    modal.show();
+});
+
+// Preview image
+document.getElementById('image').addEventListener('change', function(e) {
+    const preview = document.getElementById('imagePreview');
+    const file = e.target.files[0];
+    if (file) {
+        preview.style.display = 'block';
+        preview.src = URL.createObjectURL(file);
+    }
+});
+
+// Handle form submission
+document.getElementById('backgroundRemovalForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    
+    fetch('/remove-background', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+    if (data.success) {
+        // Show the processed image
+        document.getElementById('processedImage').src = data.image_url;
+        document.getElementById('processedImageContainer').style.display = 'block';
+        document.getElementById('downloadButton').href = data.download_url;
+        document.getElementById('downloadButton').style.display = 'inline-block';
+    } else {
+        alert('Error processing image');
+    }
+})
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error processing image');
+    });
+});
+</script>
   <!-- TIMELINE CONTROLS END -->
   <!-- UPLOADER -->
   <input autocomplete="off" id="emptyInput" value=" " class="o-none">
@@ -1349,8 +1433,9 @@
       }
     });
   </script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
   <script>
-
 
     /* <![CDATA[ */
     var pmotionParams = {

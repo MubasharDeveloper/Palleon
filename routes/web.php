@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackgroundRemoverController;
 use App\Http\Controllers\HomeController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,8 @@ Route::get('/', [HomeController::class,'index']);
 Route::get('/GetTemplateLinks', [HomeController::class,'GetTemplateLinks']);
 Route::get('/GetTemplateLink/{name}', [HomeController::class,'GetTemplateLink']);
 
-
+Route::post('/remove-background', [BackgroundRemoverController::class,'index']);
+Route::get('/download-image/{filename}', [BackgroundRemoverController::class, 'download'])->name('download.image');
 
 Route::get('/template/{id}', function () {
     $data = [];
