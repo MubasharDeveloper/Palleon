@@ -68,6 +68,8 @@ class BackgroundRemoverController extends Controller
             $filePath = $tempDir . '/' . $filename;
             file_put_contents($filePath, $imageData);
 
+            
+
             return response()->json([
                 'success' => true,
                 'image_url' => asset('temporary/' . $filename),

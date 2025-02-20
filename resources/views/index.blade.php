@@ -837,69 +837,43 @@
             keyboard_double_arrow_left
           </span>
           <div id="audio-list-parent">
-            <div id="audio-list">
-              <div class="audio-item" data-file="{{asset('files/audio/stomping-rock.mp3')}}">
-                <div class="audio-preview">
-                  <span class="material-icons">play_arrow</span>
-                </div>
-                <img class="audio-thumb" src="{{asset('files/audio/stomping-rock-thumb.png')}}">
-                <div class="audio-info">
-                  <div class="audio-info-title">Stomping Rock (Four Shots)</div>
-                  <div class="audio-info-duration">1:59</div>
-                </div>
-              </div>
-              <div class="audio-item" data-file="{{asset('files/audio/everything-feels-new.mp3')}}">
-                <div class="audio-preview">
-                  <span class="material-icons">play_arrow</span>
-                </div>
-                <img class="audio-thumb" src="{{asset('files/audio/everything-feels-new-thumb.png')}}">
-                <div class="audio-info">
-                  <div class="audio-info-title">Everything Feels New</div>
-                  <div class="audio-info-duration">1:06</div>
-                </div>
-              </div>
-              <div class="audio-item" data-file="{{asset('files/audio/the-podcast-intro.mp3')}}">
-                <div class="audio-preview">
-                  <span class="material-icons">play_arrow</span>
-                </div>
-                <img class="audio-thumb" src="{{asset('files/audio/the-podcast-intro-thumb.png')}}">
-                <div class="audio-info">
-                  <div class="audio-info-title">The Podcast Intro</div>
-                  <div class="audio-info-duration">1:51</div>
-                </div>
-              </div>
-              <div class="audio-item" data-file="{{asset('files/audio/epic-cinematic-trailer.mp3')}}">
-                <div class="audio-preview">
-                  <span class="material-icons">play_arrow</span>
-                </div>
-                <img class="audio-thumb" src="{{asset('files/audio/epic-cinematic-trailer-thumb.png')}}">
-                <div class="audio-info">
-                  <div class="audio-info-title">Epic Cinematic Trailer</div>
-                  <div class="audio-info-duration">2:27</div>
-                </div>
-              </div>
-              <div class="audio-item" data-file="{{asset('files/audio/inspirational-background.mp3')}}">
-                <div class="audio-preview">
-                  <span class="material-icons">play_arrow</span>
-                </div>
-                <img class="audio-thumb" src="{{asset('files/audio/inspirational-background-thumb.png')}}">
-                <div class="audio-info">
-                  <div class="audio-info-title">Inspirational Background</div>
-                  <div class="audio-info-duration">2:19</div>
-                </div>
-              </div>
-              <div class="audio-item" data-file="{{asset('files/audio/tropical-summer-music.mp3')}}">
-                <div class="audio-preview">
-                  <span class="material-icons">play_arrow</span>
-                </div>
-                <img class="audio-thumb" src="{{asset('files/audio/tropical-summer-music-thumb.png')}}">
-                <div class="audio-info">
-                  <div class="audio-info-title">Tropical Summer Music</div>
-                  <div class="audio-info-duration">2:35</div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div id="audio-list"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/api/audio-files",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                let audioList = $("#audio-list");
+                audioList.empty(); // Clear existing content
+
+                data.forEach(audio => {
+                    let audioItem = `
+                        <div class="audio-item" data-file="${audio.url}">
+                            <div class="audio-preview">
+                                <span class="material-icons">play_arrow</span>
+                            </div>
+                            <img class="audio-thumb" src="${audio.thumbnail}" onerror="this.onerror=null; this.src='{{ asset('files/audio/the-default.png') }}';">
+                            <div class="audio-info">
+                                <div class="audio-info-title">${audio.name.replace(/-/g, ' ')}</div>
+                            </div>
+                        </div>
+                    `;
+                    audioList.append(audioItem);
+                });
+            },
+            error: function () {
+                alert("Failed to load audio files.");
+            }
+        });
+    });
+</script>
+
+
           <div class="landing-text">
             Browse millions of assets from Pixabay by
             <a href="https://pixabay.com/music/" target="_blank">
@@ -1215,6 +1189,10 @@
         <span class="material-icons">remove_circle</span>
         <p>Background Remover</p>
       </div>
+      <div id="text-to-voice-tool-select" class="tool material-icon-main" data-id="text-to-voice-tool">
+        <span class="material-icons">remove_circle</span>
+        <p>Text to voice </p>
+      </div>
       <div id="shape-tool-select" class="tool material-icon-main" data-id="shape-tool">
         <span class="material-icons">interests</span>
         <p>Objects</p>
@@ -1239,32 +1217,152 @@
   </div>
   <!-- Background Removal Modal -->
   <div class="modal fade" id="backgroundRemovalModal" tabindex="-1" aria-labelledby="backgroundRemovalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="backgroundRemovalModalLabel">Remove Background</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="backgroundRemovalForm" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Choose Image</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                    </div>
+                    <div class="mb-3" id="before-remove">
+                        <img id="imagePreview" src="" alt="Original Preview" style="max-width: 100%; display: none;">
+                    </div>
+                    <div class="mb-3" id="processedImageContainer" style="display: none;">
+                        <img id="processedImage" src="" alt="Processed Preview" style="max-width: 100%;">
+                    </div>
+                    <div class="btns-main-wrapper" id="bg-remove-btn">
+                        <button type="submit" class="btn btn-primary">Remove Background</button>
+                        <a id="downloadButton" class="btn btn-success" href="" download style="display: none;">Download Processed Image</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <h4>Removed Background Images</h4>
+        <div id="removedImagesGallery" class="d-flex flex-wrap gap-3"></div>
+    </div>
+</div>
+
+<div class="container mt-4">
+        <h4>Removed Background Images</h4>
+        <div id="removedImageGallery" class="d-flex flex-wrap gap-3"></div>
+    </div>
+
+<!-- Gallery for Removed Background Images -->
+
+
+
+      <div class="modal fade" id="textToVoiceModal" tabindex="-1" aria-labelledby="textToVoiceModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="backgroundRemovalModalLabel">Remove Background</h5>
+              <h5 class="modal-title" id="textToVoiceModalLabel">Text to Voice</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form id="backgroundRemovalForm" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-3">
-                  <label for="image" class="form-label">Choose Image</label>
-                  <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
-                </div>
-                <div class="mb-3 " id="before-remove">
-                    <img id="imagePreview" src="" alt="Original Preview" style="max-width: 100%; display: none;">
-                </div>
-                <div class="mb-3" id="processedImageContainer" style="display: none;">
-                    <!-- <h5>Processed Image:</h5> -->
-                    <img id="processedImage" src="" alt="Processed Preview" style="max-width: 100%;">
-                    
-                </div>
-               <div class="btns-main-wrapper" id="bg-remove-btn">
-               <button type="submit" class="btn btn-primary" >Remove Background</button>
-               <a id="downloadButton" class="btn btn-success" href="" download style="display: none;">Download Processed Image</a>
-               </div>
-              </form>
+            <textarea id="text" rows="4" cols="50" placeholder="Enter text to convert to speech"></textarea>
+    <button onclick="speakAndRecord()" type="button" class="btn btn-primary">Speak & Save</button>
+
+    <audio id="audioPlayer" controls style="display: none;"></audio>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        async function speakAndRecord() {
+            let text = document.getElementById("text").value;
+
+            if (!('speechSynthesis' in window)) {
+                alert("Text-to-speech is not supported in your browser.");
+                return;
+            }
+
+            // Start recording
+            let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = () => {
+    let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+    let formData = new FormData();
+    formData.append("audio", audioBlob, "speech.wav");
+
+    // Send audio to Laravel
+    fetch("{{ route('tts.save') }}", {
+        method: "POST",
+        headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.audio_url) {
+            let audioPlayer = document.getElementById("audioPlayer");
+            audioPlayer.src = data.audio_url;
+            audioPlayer.style.display = "block";
+            audioPlayer.play();
+
+            // Call the function to refresh the audio list
+            refreshAudioList();
+        } else {
+            alert("Failed to save audio.");
+        }
+    });
+};
+
+// Function to refresh the audio list
+function refreshAudioList() {
+    $.ajax({
+        url: "/api/audio-files",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            let audioList = $("#audio-list");
+            audioList.empty(); // Clear existing content
+
+            data.forEach(audio => {
+                let audioItem = `
+                    <div class="audio-item" data-file="${audio.url}">
+                        <div class="audio-preview">
+                            <span class="material-icons">play_arrow</span>
+                        </div>
+                        <img class="audio-thumb" src="${audio.thumbnail}" onerror="this.onerror=null; this.src='{{ asset('files/audio/the-default.png') }}';">
+                        <div class="audio-info">
+                            <div class="audio-info-title">${audio.name.replace(/-/g, ' ')}</div>
+                        </div>
+                    </div>
+                `;
+                audioList.append(audioItem);
+            });
+        },
+        error: function () {
+            alert("Failed to load audio files.");
+        }
+    });
+}
+
+            // Speak the text
+            let speech = new SpeechSynthesisUtterance(text);
+            speech.lang = "en-US";
+            speech.rate = 1;
+            speech.pitch = 1;
+            speech.onend = () => {
+                mediaRecorder.stop();
+            };
+
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
             </div>
           </div>
         </div>
@@ -1272,9 +1370,16 @@
 
 
 <!-- Add this before closing body tag -->
-<script>
+<!-- <script>
 document.querySelector('#background-remover-tool-select').addEventListener('click', function() {
     var modal = new bootstrap.Modal(document.getElementById('backgroundRemovalModal'));
+    modal.show();
+});
+
+
+
+document.querySelector('#text-to-voice-tool-select').addEventListener('click', function() {
+    var modal = new bootstrap.Modal(document.getElementById('textToVoiceModal'));
     modal.show();
 });
 
@@ -1317,7 +1422,125 @@ document.getElementById('backgroundRemovalForm').addEventListener('submit', func
         alert('Error processing image');
     });
 });
+</script> -->
+
+<script>
+  document.querySelector('#text-to-voice-tool-select').addEventListener('click', function() {
+    var modal = new bootstrap.Modal(document.getElementById('textToVoiceModal'));
+    modal.show();
+});
+
+
+document.querySelector('#background-remover-tool-select').addEventListener('click', function() {
+    var modal = new bootstrap.Modal(document.getElementById('backgroundRemovalModal'));
+    modal.show();
+});
+
+// Preview image before submission
+document.getElementById('image').addEventListener('change', function(e) {
+    const preview = document.getElementById('imagePreview');
+    const file = e.target.files[0];
+    if (file) {
+        preview.style.display = 'block';
+        preview.src = URL.createObjectURL(file);
+    }
+});
+
+// Handle form submission
+document.getElementById('backgroundRemovalForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('/remove-background', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show the processed image
+            document.getElementById('processedImage').src = data.image_url;
+            document.getElementById('processedImageContainer').style.display = 'block';
+            document.getElementById('downloadButton').href = data.download_url;
+            document.getElementById('downloadButton').style.display = 'inline-block';
+
+            // Save to local storage
+            saveImageToLocalStorage(data.image_url, data.download_url);
+            displayStoredImages();
+        } else {
+            alert('Error processing image');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error processing image');
+    });
+});
+
+// Save image to local storage
+function saveImageToLocalStorage(imageUrl, downloadUrl) {
+    let images = JSON.parse(localStorage.getItem('removedImages')) || [];
+    images.push({ imageUrl, downloadUrl });
+    localStorage.setItem('removedImages', JSON.stringify(images));
+}
+
+// Display stored images in the gallery
+function displayStoredImages() {
+    let images = (JSON.parse(localStorage.getItem('removedImages')) || []).reverse();
+    let gallery = document.getElementById('removedImagesGallery');
+    gallery.innerHTML = '';
+
+    images.forEach((img, index) => {
+        let imageElement = `
+            <div class="card" style="width: 150px; position: relative;">
+                <button class="btn btn-sm btn-danger" style="position: absolute; top: 5px; right: 5px;" onclick="removeImage(${index})">✖</button>
+                <img src="${img.imageUrl}" class="card-img-top" alt="Processed Image">
+                <div class="card-body text-center">
+                    <a href="${img.downloadUrl}" class="btn btn-success btn-sm" download>Download</a>
+                </div>
+            </div>
+        `;
+        gallery.innerHTML += imageElement;
+    });
+}
+
+function displayStoredImage() {
+    let images = (JSON.parse(localStorage.getItem('removedImages')) || []).reverse();
+    let gallery = document.getElementById('removedImageGallery');
+    gallery.innerHTML = '';
+
+    if (images.length > 0) {
+        let imageElement = `
+            <div class="card" style="width: 150px; position: relative;">
+                <button class="btn btn-sm btn-danger" style="position: absolute; top: 5px; right: 5px;" onclick="removeImage(0)">✖</button>
+                <img src="${images[0].imageUrl}" class="card-img-top" alt="Processed Image">
+                <div class="card-body text-center">
+                    <a href="${images[0].downloadUrl}" class="btn btn-success btn-sm" download>Download</a>
+                </div>
+            </div>
+        `;
+        gallery.innerHTML += imageElement;
+    }
+}
+// Remove image from local storage
+function removeImage(index) {
+    let images = (JSON.parse(localStorage.getItem('removedImages')) || []).reverse();
+    images.splice(index, 1);
+    localStorage.setItem('removedImages', JSON.stringify(images));
+    displayStoredImages();
+    displayStoredImage();
+}
+
+// Load stored images on page load
+document.addEventListener('DOMContentLoaded', () => {
+    displayStoredImages();
+    displayStoredImage();
+});
 </script>
+
   <!-- TIMELINE CONTROLS END -->
   <!-- UPLOADER -->
   <input autocomplete="off" id="emptyInput" value=" " class="o-none">
