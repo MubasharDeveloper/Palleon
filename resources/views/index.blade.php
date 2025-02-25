@@ -45,6 +45,11 @@
         <div class="loader"></div>
     </div>
   </div>
+  <style>
+    .swal-overlay {
+        z-index: 110799999999 !important; /* Adjust as needed */
+    }
+</style>
   <!-- Page Loader END -->
   <!-- TOOLBAR -->
   <!-- <div id="toolbar" class="noselect toolbar-for-web">
@@ -1186,11 +1191,11 @@
         <p>Text</p>
       </div>
       <div id="background-remover-tool-select" class="tool material-icon-main" data-id="background-remover-tool">
-        <span class="material-icons">remove_circle</span>
+        <span class="material-icons">image</span>
         <p>Background Remover</p>
       </div>
       <div id="text-to-voice-tool-select" class="tool material-icon-main" data-id="text-to-voice-tool">
-        <span class="material-icons">remove_circle</span>
+        <span class="material-icons">audiotrack</span>
         <p>Text to voice </p>
       </div>
       <div id="shape-tool-select" class="tool material-icon-main" data-id="shape-tool">
@@ -1237,7 +1242,8 @@
                         <img id="processedImage" src="" alt="Processed Preview" style="max-width: 100%;">
                     </div>
                     <div class="btns-main-wrapper" id="bg-remove-btn">
-                        <button type="submit" class="btn btn-primary">Remove Background</button>
+                    <button id="loader-background-removal" class="btn btn-primary" style="display:none;">Loading...</button>
+                        <button type="submit" id="background-removal" class="btn btn-primary">Remove Background</button>
                         <a id="downloadButton" class="btn btn-success" href="" download style="display: none;">Download Processed Image</a>
                     </div>
                 </form>
@@ -1259,7 +1265,7 @@
 
 
 
-      <div class="modal fade" id="textToVoiceModal" tabindex="-1" aria-labelledby="textToVoiceModalLabel" aria-hidden="true">
+      <div class="modal fade" style="z-index: 11079999999;" id="textToVoiceModal" tabindex="-1" aria-labelledby="textToVoiceModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -1267,7 +1273,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <textarea id="text" rows="4" cols="50" placeholder="Enter text to convert to speech"></textarea>
+            <!-- <textarea id="text" rows="4" cols="50" placeholder="Enter text to convert to speech"></textarea>
     <button onclick="speakAndRecord()" type="button" class="btn btn-primary">Speak & Save</button>
 
     <audio id="audioPlayer" controls style="display: none;"></audio>
@@ -1362,7 +1368,170 @@ function refreshAudioList() {
 
             window.speechSynthesis.speak(speech);
         }
-    </script>
+    </script> -->
+    <textarea id="text" rows="4" cols="50" placeholder="Enter text to convert to speech"></textarea>
+
+<!-- Language Selection -->
+<select id="language" onchange="updateVoices()">
+    <option value="en-US">English (US)</option>
+    <option value="en-GB">English (UK)</option>
+    <option value="en-AU">English (Australian)</option>
+    <option value="en-IN">English (Indian)</option>
+    <option value="es-ES">Spanish (Spain)</option>
+    <option value="fr-FR">French</option>
+    <option value="de-DE">German</option>
+    <option value="hi-IN">Hindi</option>
+    <option value="zh-CN">Chinese (Mandarin)</option>
+    <option value="ar-XA">Arabic</option>
+</select>
+
+<!-- Voice Selection -->
+<select id="voice">
+    <!-- Voices dynamically populated -->
+</select>
+
+<!-- Pitch Control -->
+ <br>
+<label>Pitch:</label>
+<input type="range" id="pitch" min="-20" max="20" value="0">
+
+<br>
+<button id="loader" class="btn btn-primary" style="display:none;">Loading...</button>
+<button id="speak-save" onclick="speakAndSave()" type="button" class="btn btn-primary">Speak & Save</button>
+
+<audio id="audioPlayer" controls style="display: none;"></audio>
+
+<script>
+    // Define voices with accents
+    const voicesByLanguage = {
+        "en-US": ["en-US-Wavenet-A (Female)", "en-US-Wavenet-B (Male)", "en-US-Wavenet-D (Male)", "en-US-Wavenet-E (Female)"],
+        "en-GB": ["en-GB-Wavenet-A (Female)", "en-GB-Wavenet-B (Male)", "en-GB-Wavenet-D (Male)"],
+        "en-AU": ["en-AU-Wavenet-A (Female)", "en-AU-Wavenet-B (Male)"],
+        "en-IN": ["en-IN-Wavenet-A (Female)", "en-IN-Wavenet-B (Male)"],
+        "es-ES": ["es-ES-Wavenet-A (Female)", "es-ES-Wavenet-B (Male)"],
+        "fr-FR": ["fr-FR-Wavenet-A (Female)", "fr-FR-Wavenet-B (Male)"],
+        "de-DE": ["de-DE-Wavenet-A (Female)", "de-DE-Wavenet-B (Male)"],
+        "hi-IN": ["hi-IN-Wavenet-A (Female)", "hi-IN-Wavenet-B (Male)"],
+        "zh-CN": ["zh-CN-Wavenet-A (Female)", "zh-CN-Wavenet-B (Male)"],
+        "ar-XA": ["ar-XA-Wavenet-A (Female)", "ar-XA-Wavenet-B (Male)"]
+    };
+
+    // Function to update the voice dropdown based on selected language
+    function updateVoices() {
+        let language = document.getElementById("language").value;
+        let voiceSelect = document.getElementById("voice");
+        voiceSelect.innerHTML = ""; // Clear previous options
+
+        voicesByLanguage[language].forEach(voice => {
+            let option = document.createElement("option");
+            option.value = voice.split(" ")[0]; // Extract model ID (e.g., "en-US-Wavenet-A")
+            option.textContent = voice;
+            voiceSelect.appendChild(option);
+        });
+    }
+
+    // Initialize voice dropdown when the page loads
+    updateVoices();
+
+    async function speakAndSave() {
+        // Show the loader
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('speak-save').style.display = 'none';
+        
+        let text = document.getElementById("text").value;
+        let language = document.getElementById("language").value;
+        let voice = document.getElementById("voice").value;
+        let pitch = parseFloat(document.getElementById("pitch").value);
+        let speed = parseFloat(document.getElementById("speed").value);
+
+        if (!text) {
+            alert("Please enter text to convert.");
+            return;
+        }
+
+        let apiKey = "{{ env('GOOGLE_API_KEY') }}"; // Replace with your actual Google API Key
+        let apiUrl = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+
+        let requestBody = {
+            input: { text: text },
+            voice: { languageCode: language, name: voice, ssmlGender: voice.includes("-A") ? "FEMALE" : "MALE" },
+            audioConfig: { audioEncoding: "MP3", pitch: pitch, speakingRate: speed }
+        };
+
+        try {
+            let response = await fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestBody)
+            });
+
+            let data = await response.json();
+            if (!data.audioContent) {
+                throw new Error("Failed to generate speech.");
+            }
+
+            // Convert Base64 to Blob and send to backend
+            let audioBlob = new Blob([new Uint8Array(atob(data.audioContent).split("").map(c => c.charCodeAt(0)))], { type: "audio/mp3" });
+            let formData = new FormData();
+            formData.append("audio", audioBlob, "speech.mp3");
+
+            let saveResponse = await fetch("{{ route('tts.save') }}", {
+                method: "POST",
+                headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+                body: formData
+            });
+
+            let saveData = await saveResponse.json();
+            if (saveData.audio_url) {
+                let audioPlayer = document.getElementById("audioPlayer");
+                audioPlayer.src = saveData.audio_url;
+                audioPlayer.style.display = "block";
+                audioPlayer.play();
+                refreshAudioList();
+            } else {
+                alert("Failed to save audio.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred.");
+        } finally {
+            // Hide the loader after the response is received
+            document.getElementById('speak-save').style.display = 'block';
+            document.getElementById('loader').style.display = 'none';
+        }
+    }
+
+    function refreshAudioList() {
+    $.ajax({
+        url: "/api/audio-files",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            let audioList = $("#audio-list");
+            audioList.empty(); // Clear existing content
+
+            data.forEach(audio => {
+                let audioItem = `
+                    <div class="audio-item" data-file="${audio.url}">
+                        <div class="audio-preview">
+                            <span class="material-icons">play_arrow</span>
+                        </div>
+                        <img class="audio-thumb" src="${audio.thumbnail}" onerror="this.onerror=null; this.src='{{ asset('files/audio/the-default.png') }}';">
+                        <div class="audio-info">
+                            <div class="audio-info-title">${audio.name.replace(/-/g, ' ')}</div>
+                        </div>
+                    </div>
+                `;
+                audioList.append(audioItem);
+            });
+        },
+        error: function () {
+            alert("Failed to load audio files.");
+        }
+    });
+}
+</script>
+
             </div>
           </div>
         </div>
@@ -1449,6 +1618,8 @@ document.getElementById('image').addEventListener('change', function(e) {
 // Handle form submission
 document.getElementById('backgroundRemovalForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    document.getElementById('loader-background-removal').style.display = 'block';
+    document.getElementById('background-removal').style.display = 'none';
     const formData = new FormData(this);
 
     fetch('/remove-background', {
@@ -1470,13 +1641,20 @@ document.getElementById('backgroundRemovalForm').addEventListener('submit', func
             // Save to local storage
             saveImageToLocalStorage(data.image_url, data.download_url);
             displayStoredImages();
+            displayStoredImage();
+            document.getElementById('loader-background-removal').style.display = 'none';
+    document.getElementById('background-removal').style.display = 'block';
         } else {
-            alert('Error processing image');
+          document.getElementById('loader-background-removal').style.display = 'none';
+          document.getElementById('background-removal').style.display = 'block';
+          swal("Error!", "Error processing image", "error");
         }
     })
     .catch(error => {
+      document.getElementById('loader-background-removal').style.display = 'none';
+      document.getElementById('background-removal').style.display = 'block';
         console.error('Error:', error);
-        alert('Error processing image');
+        swal("Error!", "Error processing image", "error");
     });
 });
 
@@ -1659,6 +1837,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   </script>
+
+<script src="https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
   <script>
