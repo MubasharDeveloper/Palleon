@@ -1243,17 +1243,19 @@
                     </div>
                     <div class="btns-main-wrapper" id="bg-remove-btn">
                     <button id="loader-background-removal" class="btn btn-primary" style="display:none;">Loading...</button>
-                        <button type="submit" id="background-removal" class="btn btn-primary">Remove Background</button>
-                        <a id="downloadButton" class="btn btn-success" href="" download style="display: none;">Download Processed Image</a>
+                        <button type="submit" id="background-removal" class="btn btn-primary">Remove Bg</button>
+                        <a id="downloadButton" class="btn btn-success" href="" download style="display: none;">Download</a>
                     </div>
                 </form>
+                <div class="container mt-4">
+        <h4>Removed Background Images</h4>
+        <div id="removedImagesGallery" class="d-flex  gap-3"></div>
+    </div>
             </div>
         </div>
+        
     </div>
-    <div class="container mt-4">
-        <h4>Removed Background Images</h4>
-        <div id="removedImagesGallery" class="d-flex flex-wrap gap-3"></div>
-    </div>
+   
 </div>
 
 <div class="container mt-4">
@@ -1673,11 +1675,15 @@ function displayStoredImages() {
 
     images.forEach((img, index) => {
         let imageElement = `
-            <div class="card" style="width: 150px; position: relative;">
+            <div class="card" style="flex-shrink:0; width: 150px; position: relative;">
                 <button class="btn btn-sm btn-danger" style="position: absolute; top: 5px; right: 5px;" onclick="removeImage(${index})">✖</button>
                 <img src="${img.imageUrl}" class="card-img-top" alt="Processed Image">
-                <div class="card-body text-center">
-                    <a href="${img.downloadUrl}" class="btn btn-success btn-sm" download>Download</a>
+                <div class="card-body text-center download-icon-holder">
+                    <a href="${img.downloadUrl}" class="btn btn-success btn-sm" download>
+                    <span class="material-icons">
+                    download
+                    </span>
+                    </a>
                 </div>
             </div>
         `;
@@ -1696,7 +1702,11 @@ function displayStoredImage() {
                 <button class="btn btn-sm btn-danger" style="position: absolute; top: 5px; right: 5px;" onclick="removeImage(0)">✖</button>
                 <img src="${images[0].imageUrl}" class="card-img-top" alt="Processed Image">
                 <div class="card-body text-center">
-                    <a href="${images[0].downloadUrl}" class="btn btn-success btn-sm" download>Download</a>
+                    <a href="${images[0].downloadUrl}" class="btn btn-success btn-sm" download>
+                    <span class="material-icons">
+                    download
+                    </span>
+                    </a>
                 </div>
             </div>
         `;

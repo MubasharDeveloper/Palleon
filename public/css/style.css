@@ -4164,3 +4164,51 @@ label.download-options-label {
   display: flex;
   justify-content: space-between;
 }
+
+.download-icon-holder{
+  position: absolute;
+  top: -6px;
+  left: 0;
+}
+
+#removedImagesGallery{
+  overflow-y: auto;
+}
+
+.after-before-main-wrapper{
+  gap: 10px;
+}
+#processedImage,
+#imagePreview{
+  border: 1px solid rgb(177, 177, 177);
+  border-radius: 5px;
+}
+.card-img-top{
+  margin: 36px 5px 5px 5px;
+  width: 93% !important;
+  border: 1px solid rgb(177, 177, 177);
+  border-radius: 5px;
+}
+
+.container{
+  #removedImageGallery{
+    position: relative;
+    bottom: -33.5rem;
+  .card{
+    width: 180px !important;
+    .btn{
+      top: 17px;
+      right: 6px;
+    }
+    & img{
+      margin-top: 5px !important;
+      width: 130px !important;
+          }
+          .card-body {
+            position: absolute;
+            right: -8px;
+            top: 45px;
+        }
+  }
+  }
+}
